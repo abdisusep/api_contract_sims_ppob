@@ -8,7 +8,7 @@ const authenticateToken = (req, res, next) => {
         if (err) {
             return res.status(401).json({ 
                 status: 108,
-                message: 'Token tidak tidak valid atau kadaluwarsa',
+                message: 'Token tidak valid atau kadaluwarsa',
                 data: null
             });
         }
