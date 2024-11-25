@@ -2,7 +2,7 @@ const db = require('../config/db.config');
 
 const getBalance = async (email) => {
    const user_id = getUserByEmail(email).id;
-   const [rows] = await db.query('SELECT SUM(total_amount) AS balance FROM transactions WHERE user_id=?', [user_id]);
+   const [rows] = await db.query('SELECT SUM(total_amount) AS balance FROM transactions WHERE transaction_type="TOPUP"');
    return rows[0];
 }
 
@@ -29,7 +29,8 @@ const insertTransaction = async (email, data) => {
 }
 
 const getTransactionHistory = async (email) => {
-   const [rows] = await db.query('SELECT * FROM transactions');
+   const user_id = getUserByEmail(email).id;
+   const [rows] = await db.query('SELECT invoice_number, transaction_type, description, total_amount, created_on FROM transactions');
    return rows;
 }
 
