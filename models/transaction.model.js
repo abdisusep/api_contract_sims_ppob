@@ -1,7 +1,7 @@
 const db = require('../config/db.config');
 
 const getBalance = async (email) => {
-   const [rows] = await db.query('SELECT 100000 AS balance');
+   const [rows] = await db.query('SELECT SUM(total_amount) AS balance FROM transactions');
    return rows[0];
 }
 
@@ -28,7 +28,7 @@ const insertTransaction = async (email, data) => {
 }
 
 const getTransactionHistory = async (email) => {
-   const [rows] = await db.query('SELECT service_code, service_name, service_icon, service_tarif FROM services');
+   const [rows] = await db.query('SELECT * FROM transactions');
    return rows;
 }
 
