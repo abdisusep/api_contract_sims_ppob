@@ -15,8 +15,7 @@ const insertTransaction = async (email, data) => {
 }
 
 const getTransactionHistory = async (email) => {
-    // return await model.getTransactionHistory(email);
-    return 1;
+    return await model.getTransactionHistory(email);
 } 
 
 module.exports = { 
