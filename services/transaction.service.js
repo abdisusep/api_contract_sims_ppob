@@ -1,19 +1,21 @@
 const model = require('../models/transaction.model');
 
 const getBalance = async (email) => {
-    return { balance: 100000 };
+    return await model.getBalance(email);
 }
 
 const insertTopup = async (email, data) => {
-   return 1;
+    return await model.insertTopup(email, data);
 }
 
 const insertTransaction = async (email, data) => {
-    return 1;
+    return await model.insertTransaction(email, data);
 }
 
 const getTransactionHistory = async (email) => {
-    return 1;
+    return await model.getTransactionHistory(email);
 } 
 
-module.exports = { getBalance, insertTopup, insertTransaction, getTransactionHistory }
+module.exports = { 
+    getBalance, insertTopup, insertTransaction, getTransactionHistory 
+}
