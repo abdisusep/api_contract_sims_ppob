@@ -2,7 +2,6 @@ const model = require('../models/transaction.model');
 
 const getBalance = async (email) => {
     return await model.getBalance(email);
-    // return { balance: 100000 };
 }
 
 const insertTopup = async (email, data) => {
