@@ -15,11 +15,11 @@ const getBalance = async (req, res) => {
 
 const insertTopup = async (req, res) => {
    try {
-      const result = await service.insertTopup(req.email, req.body);
+      // const result = await service.insertTopup(req.email, req.body);
       res.status(200).json({
          status: 0,
          message: 'Top Up Balance berhasil',
-         data: result
+         // data: result
       });
    } catch (err) {
       res.status(500).json({ error: err.message });
@@ -28,11 +28,11 @@ const insertTopup = async (req, res) => {
 
 const insertTransaction = async (req, res) => {
    try {
-      const result = await service.insertTransaction(req.email, req.body);
+      // const result = await service.insertTransaction(req.email, req.body);
       res.status(200).json({
          status: 0,
          message: 'Transaksi berhasil',
-         data: result
+         // data: result
       });
    } catch (err) {
       res.status(500).json({ error: err.message });
@@ -41,15 +41,17 @@ const insertTransaction = async (req, res) => {
 
 const getTransactionHistory = async (req, res) => {
    try {
-      const result = await service.getTransactionHistory(req.email);
+      // const result = await service.getTransactionHistory(req.email);
       res.status(200).json({
          status: 0,
          message: 'Get History Berhasil',
-         data: result
+         // data: result
       });
    } catch (err) {
       res.status(500).json({ error: err.message });
    }
 }
 
-module.exports = { getBalance, insertTopup, insertTransaction, getTransactionHistory }
+module.exports = { 
+   getBalance, insertTopup, insertTransaction, getTransactionHistory 
+}
