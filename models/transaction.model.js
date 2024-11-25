@@ -28,8 +28,8 @@ const insertTransaction = async (email, data) => {
 }
 
 const getTransactionHistory = async (email) => {
-   // const [rows] = await db.query('SELECT service_code, service_name, service_icon, service_tarif FROM services');
-   return 1;
+   const [rows] = await db.query('SELECT service_code, service_name, service_icon, service_tarif FROM services');
+   return rows;
 }
 
 module.exports = {
