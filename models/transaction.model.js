@@ -16,7 +16,7 @@ const insertTopup = async (email, top_up_amount) => {
    const description = 'Top Up Balance';
 
    const result = await db.query(
-        'INSERT INTO transactions (user_id, invoice_number, transaction_type, description, total_amount, created_on) VALUES (?, ?, ?, ?, ?, NOW())',
+        'INSERT INTO transactions (user_id, invoice_number, transaction_type, description, total_amount, created_on) VALUES (?, ?, "TOPUP", ?, ?, NOW())',
         [user_id, invoice_number, description, top_up_amount]
    );
 
