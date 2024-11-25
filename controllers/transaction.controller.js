@@ -14,9 +14,4 @@ const getTransactionHistory = async (req, res) => {
    res.send('get transaction history');
 }
 
-module.exports = {
-   getBalance,
-   insertTopup,
-   insertTransaction,
-   getTransactionHistory
-}
+module.exports = { getBalance, insertTopup, insertTransaction, getTransactionHistory }
