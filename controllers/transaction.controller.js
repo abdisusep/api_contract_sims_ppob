@@ -15,11 +15,20 @@ const getBalance = async (req, res) => {
 
 const insertTopup = async (req, res) => {
    try {
-      // const result = await service.insertTopup(req.email, req.body);
+      const { top_up_amount } = req.body;
+      if (!top_up_amount || top_up_amount < 0 || isNaN(top_up_amount)) {
+         return res.status(400).json({
+            status: 102,
+            message: 'Parameter top_up_amount hanya boleh angka dan tidak boleh lebih kecil dari 0',
+            data: null
+         });
+      }
+   
+      const result = await service.insertTopup(req.email, top_up_amount);
       res.status(200).json({
          status: 0,
          message: 'Top Up Balance berhasil',
-         // data: result
+         data: result
       });
    } catch (err) {
       res.status(500).json({ error: err.message });
