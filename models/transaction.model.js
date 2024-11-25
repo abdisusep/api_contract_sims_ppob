@@ -1,13 +1,16 @@
 const db = require('../config/db.config');
 
 const getBalance = async (email) => {
-   const user_id = getUserByEmail(email).id;
+   const user = getUserByEmail(email);
+   const user_id = user.id;
+   
    const [rows] = await db.query('SELECT SUM(CASE WHEN transaction_type = "TOPUP" THEN total_amount ELSE 0 END) - SUM(CASE WHEN transaction_type = "PAYMENT" THEN total_amount ELSE 0 END) AS balance FROM transactions');
-   // return rows[0];
    return user_id;
 }
 
 const insertTopup = async (email, data) => {
+   const user = getUserByEmail(email);
+   const user_id = user.id;
     // const { email, first_name, last_name, password } = data;
 
     // const result = await db.query(
@@ -19,6 +22,8 @@ const insertTopup = async (email, data) => {
 }
 
 const insertTransaction = async (email, data) => {
+   const user = getUserByEmail(email);
+   const user_id = user.id;
     // const { email, first_name, last_name, password } = data;
 
     // const result = await db.query(
@@ -30,7 +35,9 @@ const insertTransaction = async (email, data) => {
 }
 
 const getTransactionHistory = async (email) => {
-   const user_id = getUserByEmail(email).id;
+   const user = getUserByEmail(email);
+   const user_id = user.id;
+   
    const [rows] = await db.query('SELECT invoice_number, transaction_type, description, total_amount, created_on FROM transactions');
    return rows;
 }
@@ -41,5 +48,5 @@ const getUserByEmail = async (email) => {
 }
 
 module.exports = {
-    getBalance, insertTopup, insertTransaction, getTransactionHistory
+    getBalance, insertTopup, insertTransaction, getTransactionHistory, getUserByEmail
 }
