@@ -8,20 +8,19 @@ const getBalance = async (email) => {
    return rows[0];
 }
 
-const insertTopup = async (email, data) => {
+const insertTopup = async (email, top_up_amount) => {
    const user = await getUserByEmail(email);
    const user_id = user.id;
    
    const invoice_number = await getInvoice(user_id);
    const description = 'Top Up Balance';
-   const { top_up_amount } = data;
 
-    const result = await db.query(
+   const result = await db.query(
         'INSERT INTO transactions (user_id, invoice_number, transaction_type, description, total_amount, created_on) VALUES (?, ?, ?, ?, ?, NOW())',
         [user_id, invoice_number, description, top_up_amount]
-    );
+   );
 
-    return result;
+   return result;
 }
 
 const insertTransaction = async (email, data) => {
