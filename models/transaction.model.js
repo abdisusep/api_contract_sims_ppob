@@ -3,7 +3,8 @@ const db = require('../config/db.config');
 const getBalance = async (email) => {
    const user_id = getUserByEmail(email).id;
    const [rows] = await db.query('SELECT SUM(CASE WHEN transaction_type = "TOPUP" THEN total_amount ELSE 0 END) - SUM(CASE WHEN transaction_type = "PAYMENT" THEN total_amount ELSE 0 END) AS balance FROM transactions');
-   return rows[0];
+   // return rows[0];
+   return user_id;
 }
 
 const insertTopup = async (email, data) => {
