@@ -5,7 +5,7 @@ const getBalance = async (email) => {
    const user_id = user.id;
    
    const [rows] = await db.query('SELECT SUM(CASE WHEN transaction_type = "TOPUP" THEN total_amount ELSE 0 END) - SUM(CASE WHEN transaction_type = "PAYMENT" THEN total_amount ELSE 0 END) AS balance FROM transactions');
-   return user_id;
+   return `Tes ${user_id}, email : ${email}`;
 }
 
 const insertTopup = async (email, data) => {
