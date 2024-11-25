@@ -40,4 +40,6 @@ const updateProfile = async (email, data) => {
     return updated;
  }
 
-module.exports = { registerUser, checkEmail, loginUser, getProfile, updateProfile }
+module.exports = { 
+    registerUser, checkEmail, loginUser, getProfile, updateProfile 
+}
