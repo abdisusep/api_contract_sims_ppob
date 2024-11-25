@@ -1,7 +1,11 @@
 const model = require('../models/transaction.model');
 
 const getBalance = async (email) => {
-    return await model.getBalance(email);
+    const result = await model.getBalance(email);
+    if(!result){
+        return 0;
+    }
+    return result;
 }
 
 const insertTopup = async (email, data) => {
