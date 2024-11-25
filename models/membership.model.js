@@ -1,7 +1,6 @@
 const db = require('../config/db.config');
 
 const registerUser = async (data) => {
-    console.log(data)
     const { email, first_name, last_name, password } = data;
 
     const result = await db.query(
