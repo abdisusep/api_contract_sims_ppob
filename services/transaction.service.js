@@ -16,8 +16,8 @@ const insertTransaction = async (email, service_code) => {
 }
 
 const getTransactionHistory = async (email, param) => {
-    let offset = parseInt(param.offset) || 0;
-    let limit  = parseInt(param.limit) || 0;
+    let offset = param.offset || 0;
+    let limit  = param.limit || '';
 
     return await model.getTransactionHistory(email, offset, limit);
 } 

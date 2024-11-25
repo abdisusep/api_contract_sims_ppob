@@ -53,7 +53,7 @@ const getTransactionHistory = async (email, offset, limit) => {
     
     const params = [user_id];
 
-    if (parseInt(limit) !== 0) {
+    if (limit !== '') {
         query += ` LIMIT ? OFFSET ?`;
         params.push(parseInt(limit), parseInt(offset));
     }
