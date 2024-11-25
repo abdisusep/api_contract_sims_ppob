@@ -166,10 +166,4 @@ const updateImage = async (req, res) => {
     });
 }
 
-module.exports = {
-    registrationUser, 
-    loginUser, 
-    getProfile,
-    updateProfile,
-    updateImage
-}
+module.exports = { registrationUser, loginUser, getProfile, updateProfile, updateImage }
