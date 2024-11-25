@@ -4,8 +4,8 @@ const getBalance = async (email) => {
    const user = await getUserByEmail(email);
    const user_id = user.id;
    
-   const [rows] = await db.query('SELECT SUM(CASE WHEN transaction_type = "TOPUP" THEN total_amount ELSE 0 END) - SUM(CASE WHEN transaction_type = "PAYMENT" THEN total_amount ELSE 0 END) AS balance FROM transactions');
-   return `Tes ${user_id}, email : ${email}`;
+   const [rows] = await db.query('SELECT SUM(CASE WHEN transaction_type = "TOPUP" THEN total_amount ELSE 0 END) - SUM(CASE WHEN transaction_type = "PAYMENT" THEN total_amount ELSE 0 END) AS balance FROM transactions WHERE user_id=?', [user_id]);
+   return rows[0];
 }
 
 const insertTopup = async (email, data) => {
@@ -38,7 +38,7 @@ const getTransactionHistory = async (email) => {
    const user = await getUserByEmail(email);
    const user_id = user.id;
    
-   const [rows] = await db.query('SELECT invoice_number, transaction_type, description, total_amount, created_on FROM transactions');
+   const [rows] = await db.query('SELECT invoice_number, transaction_type, description, total_amount, created_on FROM transactions WHERE user_id=?', [user_id]);
    return rows;
 }
 
