@@ -8,8 +8,8 @@ const getBalance = async (email) => {
     return result;
 }
 
-const insertTopup = async (email, data) => {
-    return await model.insertTopup(email, data);
+const insertTopup = async (email, top_up_amount) => {
+    return await model.insertTopup(email, top_up_amount);
 }
 
 const insertTransaction = async (email, data) => {
