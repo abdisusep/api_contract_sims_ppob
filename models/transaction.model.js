@@ -2,8 +2,7 @@ const db = require('../config/db.config');
 
 const getBalance = async (email) => {
    const [rows] = await db.query('SELECT 100000 AS balance');
-   return rows;
-   // return { balance: 1000000 }
+   return rows[0];
 }
 
 const insertTopup = async (email, data) => {
