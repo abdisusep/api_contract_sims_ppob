@@ -5,7 +5,7 @@ const getBalance = async (req, res) => {
       const result = await service.getBalance(req.email);
       res.status(200).json({
          status: 0,
-         message: '"Get Balance Berhasil',
+         message: 'Get Balance Berhasil',
          data: result
       });
    } catch (err) {
