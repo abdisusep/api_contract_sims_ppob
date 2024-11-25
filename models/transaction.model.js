@@ -4,7 +4,7 @@ const getBalance = async (email) => {
    const user = await getUserByEmail(email);
    const user_id = user.id;
    
-   const [rows] = await db.query('SELECT SUM(CASE WHEN transaction_type = "TOPUP" THEN total_amount ELSE 0 END) - SUM(CASE WHEN transaction_type = "PAYMENT" THEN total_amount ELSE 0 END) AS balance FROM transactions WHERE user_id=?', [user_id]);
+   const [rows] = await db.query('SELECT COALESCE(SUM(CASE WHEN transaction_type = "TOPUP" THEN total_amount ELSE 0 END),0) - COALESCE(SUM(CASE WHEN transaction_type = "PAYMENT" THEN total_amount ELSE 0 END),0) AS balance FROM transactions WHERE user_id=?', [user_id]);
    return rows[0];
 }
 
@@ -21,25 +21,45 @@ const insertTopup = async (email, top_up_amount) => {
    return result;
 }
 
-const insertTransaction = async (email, data) => {
-   const user = getUserByEmail(email);
-   const user_id = user.id;
-    // const { email, first_name, last_name, password } = data;
+const insertTransaction = async (email, service_code) => {
+    const user = await getUserByEmail(email);
+    const user_id = user.id;
 
-    // const result = await db.query(
-    //     'INSERT INTO users (email, first_name, last_name, password) VALUES (?, ?, ?, ?)',
-    //     [email, first_name, last_name, password]
-    // );
+    const invoice_number = await getInvoice(user_id);
+    const service = await getServiceByCode(service_code);
+    
+    const service_id = service.id;
+    const service_name = service.service_name;
+    const service_tarif = service.service_tarif;
 
-    return 1;
+    await db.query(
+        'INSERT INTO transactions (user_id, service_id, invoice_number, transaction_type, description, total_amount, created_on) VALUES (?, ?, ?, "PAYMENT", ?, ?, NOW())',
+        [user_id, service_id, invoice_number, service_name, service_tarif]
+    );
+    
+    const result = await getDetailInvoice(invoice_number);
+    return result;
 }
 
-const getTransactionHistory = async (email) => {
+const getTransactionHistory = async (email, offset, limit) => {
    const user = await getUserByEmail(email);
    const user_id = user.id;
    
-   const [rows] = await db.query('SELECT invoice_number, transaction_type, description, total_amount, created_on FROM transactions WHERE user_id=?', [user_id]);
-   return rows;
+   let query = `
+        SELECT invoice_number, transaction_type, description, total_amount, created_on
+        FROM transactions
+        WHERE user_id = ?
+    `;
+    
+    const params = [user_id];
+
+    if (parseInt(limit) !== 0) {
+        query += ` LIMIT ? OFFSET ?`;
+        params.push(parseInt(limit), parseInt(offset));
+    }
+
+    const [rows] = await db.query(query, params);
+    return rows;
 }
 
 const getUserByEmail = async (email) => {
@@ -47,14 +67,20 @@ const getUserByEmail = async (email) => {
     return rows[0];
 }
 
-const getServiceById = async (id) => {
-    const [rows] = await db.query('SELECT * FROM services WHERE id=?', [id]);
+
+const getServiceByCode = async (service_code) => {
+    const [rows] = await db.query('SELECT * FROM services WHERE service_code=?', [service_code]);
     return rows[0];
 }
 
 const getInvoice = async (user_id) => {
     const [rows] = await db.query('SELECT COUNT(*) AS count FROM transactions WHERE user_id=?', [user_id]);
-    return 'INV-' + rows[0].count;
+    return 'INVOICE-' + (rows[0].count + 1);
+}
+
+const getDetailInvoice = async (invoice_number) => {
+    const [rows] = await db.query('SELECT a.invoice_number, b.service_code, b.service_name, a.transaction_type, a.total_amount, a.created_on FROM transactions a LEFT JOIN services b ON a.service_id=b.id WHERE a.invoice_number=?', [invoice_number]);
+    return rows[0];
 }
 
 module.exports = {

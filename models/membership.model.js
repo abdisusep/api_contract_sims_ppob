@@ -38,8 +38,20 @@ const updateProfile = async (email, data) => {
 
     const updated = await getProfile(email);
     return updated;
- }
+}
+
+const updateImage = async (email, fileUrl) => {
+    console.log(email)
+    console.log(fileUrl)
+    const result = await db.query(
+        'UPDATE users SET profile_image=? WHERE email=?',
+        [fileUrl, email]
+    );
+
+    const updated = await getProfile(email);
+    return updated;
+}
 
 module.exports = { 
-    registerUser, checkEmail, loginUser, getProfile, updateProfile 
+    registerUser, checkEmail, loginUser, getProfile, updateProfile, updateImage
 }

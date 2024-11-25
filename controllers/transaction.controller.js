@@ -37,12 +37,21 @@ const insertTopup = async (req, res) => {
 
 const insertTransaction = async (req, res) => {
    try {
-      // const result = await service.insertTransaction(req.email, req.body);
-      res.status(200).json({
-         status: 0,
-         message: 'Transaksi berhasil',
-         // data: result
-      });
+      const { service_code } = req.body;
+      const result = await service.insertTransaction(req.email, service_code);
+      if (result) {
+         res.status(200).json({
+            status: 0,
+            message: 'Transaksi berhasil',
+            data: result
+         });
+      }else{
+         res.status(102).json({
+            status: 0,
+            message: 'Service atau Layanan tidak ditemukan',
+            data: null
+         });
+      }
    } catch (err) {
       res.status(500).json({ error: err.message });
    }
@@ -50,7 +59,7 @@ const insertTransaction = async (req, res) => {
 
 const getTransactionHistory = async (req, res) => {
    try {
-      const result = await service.getTransactionHistory(req.email);
+      const result = await service.getTransactionHistory(req.email, req.query);
       res.status(200).json({
          status: 0,
          message: 'Get History Berhasil',

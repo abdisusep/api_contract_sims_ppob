@@ -8,6 +8,6 @@ router.post('/registration', controller.registrationUser);
 router.post('/login', controller.loginUser);
 router.get('/profile', authenticateToken, controller.getProfile);
 router.put('/profile/update', authenticateToken, controller.updateProfile);
-router.put('/profile/image', controller.updateImage);
+router.put('/profile/image', authenticateToken, controller.updateImage);
 
 module.exports = router;

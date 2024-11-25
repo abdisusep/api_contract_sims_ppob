@@ -1,4 +1,6 @@
 const service = require('../services/membership.service');
+const upload = require('../middleware/upload.middleware');
+const multer = require('multer');
 
 const registrationUser = async (req, res) => {
     try {
@@ -159,10 +161,43 @@ const updateProfile = async (req, res) => {
 }
 
 const updateImage = async (req, res) => {
-    res.status(200).json({
-        status: 0,
-        message: 'Field file tidak boleh kosong',
-        data: null
+    upload.single('file')(req, res, async (err) => {
+        try {
+            if (err instanceof multer.MulterError) {
+                return res.status(400).json({
+                    status: 102,
+                    message: err.message,
+                    data: null,
+                });
+            } else if (err) {
+                return res.status(400).json({
+                    status: 102,
+                    message: err.message,
+                    data: null,
+                });
+            }
+
+            if (!req.file) {
+                return res.status(400).json({
+                    status: 102,
+                    message: 'Field file tidak boleh kosong',
+                    data: null,
+                });
+            }
+
+            const filePath = req.file.path.replace(/\\/g, '/');
+            const fileUrl = `${req.protocol}://${req.get('host')}/${filePath}`;
+            console.log(req)
+            const result = await service.updateImage(req.email, fileUrl);
+
+            res.status(200).json({
+                status: 0,
+                message: 'Update Profile Image berhasil',
+                data: result
+            });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     });
 }
 

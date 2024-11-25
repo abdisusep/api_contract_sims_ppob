@@ -36,6 +36,10 @@ const updateProfile = async (email, data) => {
     return await model.updateProfile(email, data);
 }
 
+const updateImage = async (email, fileUrl) => {
+    return await model.updateImage(email, fileUrl);
+}
+
 module.exports = {
-    registrationUser, checkEmail, loginUser, getProfile, updateProfile
+    registrationUser, checkEmail, loginUser, getProfile, updateProfile, updateImage
  }
