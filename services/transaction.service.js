@@ -2,7 +2,7 @@ const model = require('../models/transaction.model');
 
 const getBalance = async (email) => {
     const result = await model.getBalance(email);
-    return { balance: Number(result.balance) };
+    return { balance: parseInt(result.balance) };
 }
 
 const insertTopup = async (email, top_up_amount) => {
@@ -17,9 +17,10 @@ const insertTransaction = async (email, service_code) => {
 
 const getTransactionHistory = async (email, param) => {
     let offset = param.offset || 0;
-    let limit  = param.limit || '';
-
-    return await model.getTransactionHistory(email, offset, limit);
+    let limit  = param.limit || 5;
+    
+    const result = await model.getTransactionHistory(email, offset, limit);
+    return { offset, limit, records: result }
 } 
 
 module.exports = { 
