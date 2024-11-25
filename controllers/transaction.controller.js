@@ -41,11 +41,11 @@ const insertTransaction = async (req, res) => {
 
 const getTransactionHistory = async (req, res) => {
    try {
-      // const result = await service.getTransactionHistory(req.email);
+      const result = await service.getTransactionHistory(req.email);
       res.status(200).json({
          status: 0,
          message: 'Get History Berhasil',
-         // data: result
+         data: result
       });
    } catch (err) {
       res.status(500).json({ error: err.message });
