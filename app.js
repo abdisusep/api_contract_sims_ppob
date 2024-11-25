@@ -13,7 +13,7 @@ const routes = require('./routes');
 app.use('/', routes);
 
 app.get('/', function (req, res) {
-    res.send('PPOB API');
+    res.status(200).json({ message: 'Welcome to PPOB API' });
 });
 
 app.listen(port, () => {
