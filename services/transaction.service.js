@@ -5,8 +5,7 @@ const getBalance = async (email) => {
 }
 
 const insertTopup = async (email, data) => {
-    // return await model.insertTopup(email, data);
-    return 1;
+    return await model.insertTopup(email, data);
 }
 
 const insertTransaction = async (email, data) => {
