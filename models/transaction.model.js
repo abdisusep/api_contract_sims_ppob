@@ -1,7 +1,8 @@
 const db = require('../config/db.config');
 
 const getBalance = async (email) => {
-   const [rows] = await db.query('SELECT SUM(total_amount) AS balance FROM transactions');
+   const user_id = getUserByEmail(email).id;
+   const [rows] = await db.query('SELECT SUM(total_amount) AS balance FROM transactions WHERE user_id=?', [user_id]);
    return rows[0];
 }
 
@@ -30,6 +31,11 @@ const insertTransaction = async (email, data) => {
 const getTransactionHistory = async (email) => {
    const [rows] = await db.query('SELECT * FROM transactions');
    return rows;
+}
+
+const getUserByEmail = async (email) => {
+    const [rows] = await db.query('SELECT * FROM users WHERE email=?', [email]);
+    return rows[0];
 }
 
 module.exports = {
