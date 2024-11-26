@@ -32,13 +32,14 @@ const insertTransaction = async (email, service_code) => {
     const service_name = service.service_name;
     const service_tarif = service.service_tarif;
 
-    await db.query(
+    const result = await db.query(
         'INSERT INTO transactions (user_id, service_id, invoice_number, transaction_type, description, total_amount, created_on) VALUES (?, ?, ?, "PAYMENT", ?, ?, NOW())',
         [user_id, service_id, invoice_number, service_name, service_tarif]
     );
-    
-    const result = await getDetailInvoice(invoice_number);
-    return result;
+
+    if(result){
+       return await getDetailInvoice(invoice_number);
+    }
 }
 
 const getTransactionHistory = async (email, offset, limit) => {
