@@ -38,7 +38,7 @@ const insertTransaction = async (email, service_code) => {
     );
 
     if(result){
-       return await getDetailInvoice(invoice_number);
+       return await getDetailInvoice(invoice_number, user_id);
     }
 }
 
@@ -79,8 +79,8 @@ const getInvoice = async (user_id) => {
     return 'INVOICE-' + (rows[0].count + 1);
 }
 
-const getDetailInvoice = async (invoice_number) => {
-    const [rows] = await db.query('SELECT a.invoice_number, b.service_code, b.service_name, a.transaction_type, a.total_amount, a.created_on FROM transactions a LEFT JOIN services b ON a.service_id=b.id WHERE a.invoice_number=?', [invoice_number]);
+const getDetailInvoice = async (invoice_number, user_id) => {
+    const [rows] = await db.query('SELECT a.invoice_number, b.service_code, b.service_name, a.transaction_type, a.total_amount, a.created_on FROM transactions a LEFT JOIN services b ON a.service_id=b.id WHERE a.invoice_number=? AND a.user_id=?', [invoice_number, user_id]);
     return rows[0];
 }
 
